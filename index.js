@@ -1,22 +1,23 @@
-// index.js — simple persistent shortener (Node + SQLite)
+// index.js — URL shortener + basic UI
 import express from 'express';
 import bodyParser from 'body-parser';
 import Database from 'better-sqlite3';
 import crypto from 'crypto';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Initialize SQLite DB
+// SQLite setup
 const db = new Database('links.db');
-db.prepare(`
-  CREATE TABLE IF NOT EXISTS links (
-    code TEXT PRIMARY KEY,
-    url TEXT NOT NULL
-  )
-`).run();
+db.prepare('CREATE TABLE IF NOT EXISTS links (code TEXT PRIMARY KEY, url TEXT NOT NULL)').run();
 
-// Create short link
+// API — shorten
 app.post('/shorten', (req, res) => {
   const { url } = req.body;
   if (!url || !/^https?:\/\//i.test(url)) {
@@ -27,15 +28,17 @@ app.post('/shorten', (req, res) => {
   res.json({ shortUrl: `${req.protocol}://${req.get('host')}/${code}` });
 });
 
-// Redirect short link
+// Redirect
 app.get('/:code', (req, res) => {
   const row = db.prepare('SELECT url FROM links WHERE code = ?').get(req.params.code);
   if (!row) return res.status(404).send('Not found');
   res.redirect(301, row.url);
 });
 
-// Root for sanity check
-app.get('/', (req, res) => res.send('URL shortener is running'));
+// Home page (UI)
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Shortener running on ${PORT}`));
+app.listen(PORT, () => console.log(`Shortener running on port ${PORT}`));

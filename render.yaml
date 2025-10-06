@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: my-shortener
+    name: montlac
     env: node
     plan: free
     buildCommand: "npm install"

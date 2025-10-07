@@ -14,283 +14,40 @@
       --light: #f8f9fa;
       --shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', system-ui, sans-serif;
-    }
-    
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: white;
-      padding: 20px;
-      position: relative;
-      overflow-x: hidden;
-    }
-    
-    .background-animation {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      opacity: 0.2;
-    }
-    
-    .container {
-      width: 100%;
-      max-width: 500px;
-      animation: fadeIn 0.8s ease-out;
-    }
-    
-    .logo {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    
-    .logo h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 5px;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    }
-    
-    .logo p {
-      font-size: 1rem;
-      opacity: 0.9;
-    }
-    
-    .box {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      padding: 30px;
-      border-radius: 20px;
-      text-align: center;
-      width: 100%;
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      transition: transform 0.3s ease;
-    }
-    
-    .box:hover {
-      transform: translateY(-5px);
-    }
-    
-    .input-group {
-      position: relative;
-      margin-bottom: 20px;
-    }
-    
-    input {
-      width: 100%;
-      padding: 15px 20px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 50px;
-      font-size: 1rem;
-      background: rgba(255, 255, 255, 0.9);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-    }
-    
-    input:focus {
-      outline: none;
-      background: white;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-      transform: scale(1.02);
-    }
-    
-    button {
-      padding: 15px 40px;
-      background: var(--accent);
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
-      color: white;
-      box-shadow: 0 4px 15px rgba(255, 185, 0, 0.3);
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-    
-    button:hover {
-      background: #ffa500;
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(255, 185, 0, 0.4);
-    }
-    
-    button:active {
-      transform: translateY(0);
-    }
-    
-    .result {
-      margin-top: 25px;
-      background: rgba(255, 255, 255, 0.2);
-      padding: 20px;
-      border-radius: 15px;
-      word-wrap: break-word;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: all 0.5s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 15px;
-    }
-    
-    .result.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .result a {
-      color: white;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1.1rem;
-      word-break: break-all;
-      padding: 10px 15px;
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 10px;
-      transition: all 0.3s ease;
-      display: block;
-      width: 100%;
-    }
-    
-    .result a:hover {
-      background: rgba(255, 255, 255, 0.25);
-      transform: scale(1.02);
-    }
-    
-    .action-buttons {
-      display: flex;
-      gap: 10px;
-      width: 100%;
-    }
-    
-    .action-buttons button {
-      flex: 1;
-      padding: 12px;
-      font-size: 0.9rem;
-    }
-    
-    .copy-btn {
-      background: rgba(255, 255, 255, 0.2);
-    }
-    
-    .copy-btn:hover {
-      background: rgba(255, 255, 255, 0.3);
-    }
-    
-    .stats {
-      display: flex;
-      justify-content: space-around;
-      margin-top: 30px;
-      width: 100%;
-      max-width: 500px;
-    }
-    
-    .stat-item {
-      text-align: center;
-      padding: 15px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      width: 30%;
-      transition: transform 0.3s ease;
-    }
-    
-    .stat-item:hover {
-      transform: translateY(-5px);
-    }
-    
-    .stat-number {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 5px;
-    }
-    
-    .stat-label {
-      font-size: 0.85rem;
-      opacity: 0.9;
-    }
-    
-    .footer {
-      margin-top: 40px;
-      text-align: center;
-      opacity: 0.7;
-      font-size: 0.9rem;
-    }
-    
-    .loading {
-      display: none;
-      margin-top: 20px;
-    }
-    
-    .spinner {
-      width: 40px;
-      height: 40px;
-      border: 4px solid rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      border-top-color: white;
-      animation: spin 1s ease-in-out infinite;
-      margin: 0 auto;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .pulse {
-      animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-    
-    /* Responsive design */
-    @media (max-width: 600px) {
-      .box {
-        padding: 20px;
-      }
-      
-      .logo h1 {
-        font-size: 2rem;
-      }
-      
-      .stats {
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-      }
-      
-      .stat-item {
-        width: 80%;
-      }
-      
-      .action-buttons {
-        flex-direction: column;
-      }
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+    body { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 20px; position: relative; overflow-x: hidden; }
+    .background-animation { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.2; }
+    .container { width: 100%; max-width: 500px; animation: fadeIn 0.8s ease-out; }
+    .logo { text-align: center; margin-bottom: 20px; }
+    .logo h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 5px; text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+    .logo p { font-size: 1rem; opacity: 0.9; }
+    .box { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); padding: 30px; border-radius: 20px; text-align: center; width: 100%; box-shadow: var(--shadow); border: 1px solid rgba(255, 255, 255, 0.2); transition: transform 0.3s ease; }
+    .box:hover { transform: translateY(-5px); }
+    .input-group { position: relative; margin-bottom: 20px; }
+    input { width: 100%; padding: 15px 20px; margin: 10px 0; border: none; border-radius: 50px; font-size: 1rem; background: rgba(255, 255, 255, 0.9); color: #333; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: all 0.3s ease; }
+    input:focus { outline: none; background: white; box-shadow: 0 6px 20px rgba(0,0,0,0.15); transform: scale(1.02); }
+    button { padding: 15px 40px; background: var(--accent); border: none; border-radius: 50px; cursor: pointer; font-size: 1rem; font-weight: 600; color: white; box-shadow: 0 4px 15px rgba(255, 185, 0, 0.3); transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center; gap: 10px; }
+    button:hover { background: #ffa500; transform: translateY(-3px); box-shadow: 0 6px 20px rgba(255, 185, 0, 0.4); }
+    button:active { transform: translateY(0); }
+    .result { margin-top: 25px; background: rgba(255, 255, 255, 0.2); padding: 20px; border-radius: 15px; word-wrap: break-word; opacity: 0; transform: translateY(10px); transition: all 0.5s ease; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+    .result.show { opacity: 1; transform: translateY(0); }
+    .result a { color: white; text-decoration: none; font-weight: 600; font-size: 1.1rem; word-break: break-all; padding: 10px 15px; background: rgba(255, 255, 255, 0.15); border-radius: 10px; transition: all 0.3s ease; display: block; width: 100%; }
+    .result a:hover { background: rgba(255, 255, 255, 0.25); transform: scale(1.02); }
+    .action-buttons { display: flex; gap: 10px; width: 100%; }
+    .action-buttons button, .action-buttons a button { flex: 1; padding: 12px; font-size: 0.9rem; width: 100%; }
+    .copy-btn { background: rgba(255, 255, 255, 0.2); }
+    .copy-btn:hover { background: rgba(255, 255, 255, 0.3); }
+    .stats { display: flex; justify-content: space-around; margin-top: 30px; width: 100%; max-width: 500px; }
+    .stat-item { text-align: center; padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; width: 30%; transition: transform 0.3s ease; }
+    .stat-item:hover { transform: translateY(-5px); }
+    .stat-number { font-size: 1.8rem; font-weight: 700; margin-bottom: 5px; }
+    .stat-label { font-size: 0.85rem; opacity: 0.9; }
+    .footer { margin-top: 40px; text-align: center; opacity: 0.7; font-size: 0.9rem; }
+    .loading { display: none; margin-top: 20px; }
+    .spinner { width: 40px; height: 40px; border: 4px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top-color: white; animation: spin 1s ease-in-out infinite; margin: 0 auto; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 600px) { .box { padding: 20px; } .logo h1 { font-size: 2rem; } .stats { flex-direction: column; align-items: center; gap: 15px; } .stat-item { width: 80%; } .action-buttons { flex-direction: column; } }
   </style>
 </head>
 <body>
@@ -311,12 +68,12 @@
       <p>World-Class URL Shortening</p>
     </div>
     
-    <div class="box pulse">
+    <div class="box">
       <div class="input-group">
         <input type="text" id="longUrl" placeholder="Paste your long URL here..." />
       </div>
       <div class="input-group">
-        <input type="text" id="customSlug" placeholder="Custom slug (e.g. kevin2025)" />
+        <input type="text" id="customSlug" placeholder="Custom slug (e.g. my-portfolio)" />
       </div>
       <button onclick="shorten()">
         <i class="fas fa-link"></i>
@@ -335,11 +92,11 @@
     
     <div class="stats">
       <div class="stat-item">
-        <div class="stat-number">1.2M</div>
+        <div class="stat-number">1.2M+</div>
         <div class="stat-label">Links Shortened</div>
       </div>
       <div class="stat-item">
-        <div class="stat-number">98.7%</div>
+        <div class="stat-number">99.9%</div>
         <div class="stat-label">Uptime</div>
       </div>
       <div class="stat-item">
@@ -350,7 +107,7 @@
   </div>
   
   <div class="footer">
-    <p>© 2023 Montlac URL Shortener. All rights reserved.</p>
+    <p>© 2024 Montlac URL Shortener. All rights reserved.</p>
   </div>
 
   <script>
@@ -361,17 +118,10 @@
       const loadingDiv = document.getElementById('loading');
 
       if (!longUrl || !customSlug) {
-        showResult('Please enter both URL and custom slug', 'error');
+        showResult('Please enter both a URL and a custom slug.', 'error');
         return;
       }
-
-      try {
-        new URL(longUrl);
-      } catch {
-        showResult('Please enter a valid URL (include http:// or https://)', 'error');
-        return;
-      }
-
+      
       loadingDiv.style.display = 'block';
       resultDiv.classList.remove('show');
 
@@ -383,12 +133,12 @@
         });
         const data = await res.json();
         if (!res.ok) {
-          showResult(data.message || 'An error occurred', 'error');
-        } else {
-          showResult(data.shortUrl, 'success');
+          // Use the consistent error message from our backend.
+          throw new Error(data.message || 'An unknown error occurred.');
         }
+        showResult(data.shortUrl, 'success');
       } catch (err) {
-        showResult('Network error. Please try again.', 'error');
+        showResult(err.message, 'error');
       } finally {
         loadingDiv.style.display = 'none';
       }
@@ -396,6 +146,7 @@
 
     function showResult(message, type) {
       const resultDiv = document.getElementById('result');
+      const slug = document.getElementById('customSlug').value.trim();
 
       if (type === 'error') {
         resultDiv.innerHTML = `
@@ -411,19 +162,21 @@
             <button class="copy-btn" onclick="copyToClipboard('${message}')">
               <i class="fas fa-copy"></i> Copy
             </button>
-            <button onclick="shareUrl('${message}')">
-              <i class="fas fa-share-alt"></i> Share
-            </button>
+            <a href="/stats.html?slug=${slug}" target="_blank" style="text-decoration: none; flex: 1;">
+              <button style="width: 100%;">
+                <i class="fas fa-chart-line"></i> View Stats
+              </button>
+            </a>
           </div>
         `;
       }
-
       resultDiv.classList.add('show');
     }
 
     function copyToClipboard(text) {
       navigator.clipboard.writeText(text).then(() => {
         const copyBtn = document.querySelector('.copy-btn');
+        if (!copyBtn) return;
         const originalText = copyBtn.innerHTML;
         copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
         copyBtn.style.background = 'rgba(0, 200, 0, 0.3)';
@@ -434,18 +187,7 @@
       });
     }
 
-    function shareUrl(url) {
-      if (navigator.share) {
-        navigator.share({
-          title: 'My shortened URL',
-          text: 'Check out this shortened URL:',
-          url: url
-        }).catch(() => {});
-      } else {
-        copyToClipboard(url);
-      }
-    }
-
+    // Add event listeners for Enter key press
     document.getElementById('longUrl').addEventListener('keypress', function (e) {
       if (e.key === 'Enter') shorten();
     });

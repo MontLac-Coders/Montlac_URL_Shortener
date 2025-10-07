@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Montlac Analytics</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Add some basic styling, you can copy some from your index.html */
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #1a1a2e; color: white; padding: 20px; }
+    .container { max-width: 800px; margin: 0 auto; background: rgba(255, 255, 255, 0.1); padding: 30px; border-radius: 15px; }
+    h1, h2 { border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; }
+    .stat-card { background: rgba(0,0,0,0.2); padding: 20px; margin: 20px 0; border-radius: 10px; }
+    a { color: #2d89ef; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    th { background-color: rgba(0,0,0,0.3); }
+    td { word-break: break-all; }
+  </style>
+</head>
+<body>
+  <div class="container" id="loading">
+    <h2><i class="fas fa-spinner fa-spin"></i> Loading Analytics...</h2>
+  </div>
+
+  <div class="container" id="content" style="display: none;">
+    <h1>Analytics for <span id="slug-name"></span></h1>
+    
+    <div class="stat-card">
+      <h2><i class="fas fa-chart-bar"></i> Summary</h2>
+      <p><strong>Total Clicks:</strong> <span id="total-clicks">0</span></p>
+      <p><strong>Original URL:</strong> <a href="#" id="long-url" target="_blank"></a></p>
+      <p><strong>Created On:</strong> <span id="created-date"></span></p>
+    </div>
+
+    <div class="stat-card">
+      <h2><i class="fas fa-history"></i> Recent Clicks</h2>
+      <table id="clicks-table">
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>User Agent</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Click data will be inserted here -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const contentDiv = document.getElementById('content');
+      const loadingDiv = document.getElementById('loading');
+
+      // Get the slug from the URL query parameter (e.g., stats.html?slug=my-link)
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get('slug');
+
+      if (!slug) {
+        contentDiv.innerHTML = '<h1>Error: No slug provided in the URL.</h1>';
+        return;
+      }
+
+      try {
+        const res = await fetch(`/stats/${slug}`);
+        if (!res.ok) {
+          throw new Error('Could not fetch stats for this link.');
+        }
+        const data = await res.json();
+
+        // Populate the summary
+        document.getElementById('slug-name').textContent = `/${slug}`;
+        document.getElementById('total-clicks').textContent = data.urlInfo.clicks;
+        document.getElementById('long-url').href = data.urlInfo.long_url;
+        document.getElementById('long-url').textContent = data.urlInfo.long_url;
+        document.getElementById('created-date').textContent = new Date(data.urlInfo.created_at).toLocaleString();
+
+        // Populate the recent clicks table
+        const tableBody = document.querySelector('#clicks-table tbody');
+        if (data.recentClicks.length === 0) {
+          tableBody.innerHTML = '<tr><td colspan="2">No clicks recorded yet.</td></tr>';
+        } else {
+          let rowsHtml = '';
+          data.recentClicks.forEach(click => {
+            rowsHtml += `
+              <tr>
+                <td>${new Date(click.created_at).toLocaleString()}</td>
+                <td>${click.user_agent}</td>
+              </tr>
+            `;
+          });
+          tableBody.innerHTML = rowsHtml;
+        }
+
+        // Show the content
+        loadingDiv.style.display = 'none';
+        contentDiv.style.display = 'block';
+
+      } catch (err) {
+        loadingDiv.innerHTML = `<h1>Error: ${err.message}</h1>`;
+      }
+    });
+  </script>
+</body>
+</html>

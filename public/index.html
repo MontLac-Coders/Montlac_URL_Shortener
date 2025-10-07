@@ -383,7 +383,7 @@
         });
         const data = await res.json();
         if (!res.ok) {
-          showResult(data.error || 'An error occurred', 'error');
+          showResult(data.message || 'An error occurred', 'error');
         } else {
           showResult(data.shortUrl, 'success');
         }

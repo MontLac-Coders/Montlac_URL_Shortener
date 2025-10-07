@@ -316,11 +316,8 @@
         <input type="text" id="longUrl" placeholder="Paste your long URL here..." />
       </div>
       <div class="input-group">
-       <input type="text" id="longUrl" placeholder="Paste your long URL here..." />
-       </div>
-       <div class="input-group">
-       <input type="text" id="customSlug" placeholder="Custom slug (e.g. kevin2025)" />
-       </div>
+        <input type="text" id="customSlug" placeholder="Custom slug (e.g. kevin2025)" />
+      </div>
       <button onclick="shorten()">
         <i class="fas fa-link"></i>
         Shorten URL
@@ -357,104 +354,104 @@
   </div>
 
   <script>
-  async function shorten() {
-    const longUrl = document.getElementById('longUrl').value.trim();
-    const customSlug = document.getElementById('customSlug').value.trim();
-    const resultDiv = document.getElementById('result');
-    const loadingDiv = document.getElementById('loading');
+    async function shorten() {
+      const longUrl = document.getElementById('longUrl').value.trim();
+      const customSlug = document.getElementById('customSlug').value.trim();
+      const resultDiv = document.getElementById('result');
+      const loadingDiv = document.getElementById('loading');
 
-    if (!longUrl || !customSlug) {
-      showResult('Please enter both URL and custom slug', 'error');
-      return;
-    }
-
-    try {
-      new URL(longUrl);
-    } catch {
-      showResult('Please enter a valid URL (include http:// or https://)', 'error');
-      return;
-    }
-
-    loadingDiv.style.display = 'block';
-    resultDiv.classList.remove('show');
-
-    try {
-      const res = await fetch('/shorten', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: longUrl, slug: customSlug })
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        showResult(data.error || 'An error occurred', 'error');
-      } else {
-        showResult(data.shortUrl, 'success');
+      if (!longUrl || !customSlug) {
+        showResult('Please enter both URL and custom slug', 'error');
+        return;
       }
-    } catch (err) {
-      showResult('Network error. Please try again.', 'error');
-    } finally {
-      loadingDiv.style.display = 'none';
+
+      try {
+        new URL(longUrl);
+      } catch {
+        showResult('Please enter a valid URL (include http:// or https://)', 'error');
+        return;
+      }
+
+      loadingDiv.style.display = 'block';
+      resultDiv.classList.remove('show');
+
+      try {
+        const res = await fetch('/shorten', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: longUrl, slug: customSlug })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          showResult(data.error || 'An error occurred', 'error');
+        } else {
+          showResult(data.shortUrl, 'success');
+        }
+      } catch (err) {
+        showResult('Network error. Please try again.', 'error');
+      } finally {
+        loadingDiv.style.display = 'none';
+      }
     }
-  }
 
-  function showResult(message, type) {
-    const resultDiv = document.getElementById('result');
+    function showResult(message, type) {
+      const resultDiv = document.getElementById('result');
 
-    if (type === 'error') {
-      resultDiv.innerHTML = `
-        <div style="color: #ff6b6b; font-weight: 600;">
-          <i class="fas fa-exclamation-triangle"></i> ${message}
-        </div>
-      `;
-    } else {
-      resultDiv.innerHTML = `
-        <p style="font-weight: 600;">Your shortened URL:</p>
-        <a href="${message}" target="_blank">${message}</a>
-        <div class="action-buttons">
-          <button class="copy-btn" onclick="copyToClipboard('${message}')">
-            <i class="fas fa-copy"></i> Copy
-          </button>
-          <button onclick="shareUrl('${message}')">
-            <i class="fas fa-share-alt"></i> Share
-          </button>
-        </div>
-      `;
+      if (type === 'error') {
+        resultDiv.innerHTML = `
+          <div style="color: #ff6b6b; font-weight: 600;">
+            <i class="fas fa-exclamation-triangle"></i> ${message}
+          </div>
+        `;
+      } else {
+        resultDiv.innerHTML = `
+          <p style="font-weight: 600;">Your shortened URL:</p>
+          <a href="${message}" target="_blank">${message}</a>
+          <div class="action-buttons">
+            <button class="copy-btn" onclick="copyToClipboard('${message}')">
+              <i class="fas fa-copy"></i> Copy
+            </button>
+            <button onclick="shareUrl('${message}')">
+              <i class="fas fa-share-alt"></i> Share
+            </button>
+          </div>
+        `;
+      }
+
+      resultDiv.classList.add('show');
     }
 
-    resultDiv.classList.add('show');
-  }
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const copyBtn = document.querySelector('.copy-btn');
+        const originalText = copyBtn.innerHTML;
+        copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        copyBtn.style.background = 'rgba(0, 200, 0, 0.3)';
+        setTimeout(() => {
+          copyBtn.innerHTML = originalText;
+          copyBtn.style.background = '';
+        }, 2000);
+      });
+    }
 
-  function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(() => {
-      const copyBtn = document.querySelector('.copy-btn');
-      const originalText = copyBtn.innerHTML;
-      copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-      copyBtn.style.background = 'rgba(0, 200, 0, 0.3)';
-      setTimeout(() => {
-        copyBtn.innerHTML = originalText;
-        copyBtn.style.background = '';
-      }, 2000);
+    function shareUrl(url) {
+      if (navigator.share) {
+        navigator.share({
+          title: 'My shortened URL',
+          text: 'Check out this shortened URL:',
+          url: url
+        }).catch(() => {});
+      } else {
+        copyToClipboard(url);
+      }
+    }
+
+    document.getElementById('longUrl').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') shorten();
     });
-  }
-
-  function shareUrl(url) {
-    if (navigator.share) {
-      navigator.share({
-        title: 'My shortened URL',
-        text: 'Check out this shortened URL:',
-        url: url
-      }).catch(() => {});
-    } else {
-      copyToClipboard(url);
-    }
-  }
-
-  document.getElementById('longUrl').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') shorten();
-  });
-  document.getElementById('customSlug').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') shorten();
-  });
-</script>
+    document.getElementById('customSlug').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') shorten();
+    });
+  </script>
 </body>
 </html>
